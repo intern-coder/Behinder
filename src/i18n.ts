@@ -8,7 +8,7 @@ export const translations = {
     nav_feedback: "反馈",
     nav_shipping: "发货",
     nav_settings: "设置",
-    
+
     login_title: "管理员登录",
     login_desc: "请输入您的账号密码以管理奖励",
     admin_account: "管理员账号",
@@ -22,14 +22,16 @@ export const translations = {
     privacy_policy: "隐私政策",
     terms_of_service: "服务条款",
     help_center: "帮助中心",
-    
+
     overview_title: "抽奖概况",
     overview_desc: "产品活动实时数据统计。",
     shipping_mgmt: "发货管理",
     user_feedback: "用户反馈",
     view_all: "查看全部",
     process: "处理",
-    
+    stat_participants: "累计参与人数",
+    stat_pending: "待发货订单",
+
     shipping_title: "发货管理",
     shipping_desc: "管理所有中奖订单的物流与发货状态。",
     search_placeholder: "搜索订单号或姓名...",
@@ -42,11 +44,11 @@ export const translations = {
     status: "状态",
     actions: "操作",
     details: "详情",
-    
+
     pending: "待处理",
     reviewing: "审核中",
     completed: "已完成",
-    
+
     order_details: "订单详情",
     shipping_info: "收货信息",
     full_name: "收件全名",
@@ -58,7 +60,7 @@ export const translations = {
     phone: "电话号码",
     close: "关闭",
     confirm_ship: "确认发货",
-    
+
     ship_form_title: "填写发货信息",
     carrier: "物流承运商",
     tracking_no: "物流单号",
@@ -68,7 +70,7 @@ export const translations = {
     ship_success: "发货信息已提交",
     ship_success_desc: "订单状态已更新为已完成。",
     cancel: "取消",
-    
+
     feedback_title: "用户反馈",
     feedback_desc: "查看所有用户的评价与建议。",
     feedback_details: "反馈详情",
@@ -78,7 +80,7 @@ export const translations = {
     reset_filter: "重置筛选",
     no_orders_found: "未找到匹配的订单",
     tracking_placeholder: "请输入唯一的物流追踪单号",
-    
+
     settings_title: "系统设置",
     settings_desc: "配置系统的全局参数。",
     general_settings: "通用设置",
@@ -106,7 +108,7 @@ export const translations = {
     nav_feedback: "Feedback",
     nav_shipping: "Shipping",
     nav_settings: "Settings",
-    
+
     login_title: "Admin Login",
     login_desc: "Please enter your credentials to manage rewards",
     admin_account: "Admin Account",
@@ -120,14 +122,16 @@ export const translations = {
     privacy_policy: "Privacy Policy",
     terms_of_service: "Terms of Service",
     help_center: "Help Center",
-    
+
     overview_title: "Raffle Overview",
     overview_desc: "Real-time statistics for product activities.",
     shipping_mgmt: "Shipping Management",
     user_feedback: "User Feedback",
     view_all: "View All",
     process: "Process",
-    
+    stat_participants: "Total Participants",
+    stat_pending: "Pending Shipments",
+
     shipping_title: "Shipping Management",
     shipping_desc: "Manage logistics and shipping status for all winning orders.",
     search_placeholder: "Search order ID or name...",
@@ -140,11 +144,11 @@ export const translations = {
     status: "Status",
     actions: "Actions",
     details: "Details",
-    
+
     pending: "Pending",
     reviewing: "Reviewing",
     completed: "Completed",
-    
+
     order_details: "Order Details",
     shipping_info: "Shipping Info",
     full_name: "Full Name",
@@ -156,7 +160,7 @@ export const translations = {
     phone: "Phone Number",
     close: "Close",
     confirm_ship: "Confirm Ship",
-    
+
     ship_form_title: "Shipping Information",
     carrier: "Carrier",
     tracking_no: "Tracking Number",
@@ -166,7 +170,7 @@ export const translations = {
     ship_success: "Shipping Info Submitted",
     ship_success_desc: "Order status has been updated to completed.",
     cancel: "Cancel",
-    
+
     feedback_title: "User Feedback",
     feedback_desc: "View all user reviews and suggestions.",
     feedback_details: "Feedback Details",
@@ -176,7 +180,7 @@ export const translations = {
     reset_filter: "Reset Filters",
     no_orders_found: "No matching orders found",
     tracking_placeholder: "Enter unique tracking number",
-    
+
     settings_title: "System Settings",
     settings_desc: "Configure global system parameters.",
     general_settings: "General Settings",

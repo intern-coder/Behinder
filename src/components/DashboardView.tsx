@@ -27,18 +27,15 @@ export const DashboardView: React.FC<{ onLogout: () => void }> = ({ onLogout }) 
     const fetchData = async () => {
       try {
         const [
-          { data: statsData },
           { data: ordersData },
           { data: feedbacksData },
           { data: productsData }
         ] = await Promise.all([
-          supabase.from('stats').select('*').order('id', { ascending: true }),
           supabase.from('orders').select('*').order('created_at', { ascending: false }),
           supabase.from('feedbacks').select('*').order('created_at', { ascending: false }),
           supabase.from('products').select('*').order('id', { ascending: true }),
         ]);
 
-        setStats(statsData || []);
         setOrders(ordersData || []);
         setFeedbacks(feedbacksData || []);
         setProducts(productsData || []);
@@ -70,6 +67,24 @@ export const DashboardView: React.FC<{ onLogout: () => void }> = ({ onLogout }) 
     };
   }, []);
 
+  // 动态计算统计数据
+  const dynamicStats: StatData[] = [
+    {
+      label: t('stat_participants'),
+      value: orders.length.toLocaleString(),
+      change: '+100%', // 这里可以根据需求调整，当前设为总数
+      trend: 'up',
+      icon: 'group'
+    },
+    {
+      label: t('stat_pending'),
+      value: orders.filter(o => o.status !== 'completed').length.toLocaleString(),
+      change: '实时',
+      trend: 'up',
+      icon: 'pending_actions'
+    }
+  ];
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -95,8 +110,8 @@ export const DashboardView: React.FC<{ onLogout: () => void }> = ({ onLogout }) 
               <p className="text-slate-500">{t('overview_desc')}</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {stats.map((stat, i) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {dynamicStats.map((stat, i) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
