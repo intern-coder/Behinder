@@ -19,6 +19,7 @@ export const ShippingTable: React.FC<ShippingTableProps> = ({ orders }) => {
         <table className="w-full text-left">
           <thead className="bg-slate-50 text-slate-500 text-xs uppercase font-bold">
             <tr>
+              <th className="px-6 py-3">{t('order_id')}</th>
               <th className="px-6 py-3">{t('winner')}</th>
               <th className="px-6 py-3">{t('prize_name')}</th>
               <th className="px-6 py-3">{t('status')}</th>
@@ -28,6 +29,9 @@ export const ShippingTable: React.FC<ShippingTableProps> = ({ orders }) => {
           <tbody className="divide-y divide-primary/5">
             {orders.map((order) => (
               <tr key={order.id} className="hover:bg-primary/5 transition-colors">
+                <td className="px-6 py-4 text-xs font-mono text-slate-500">
+                  {order.order_no || `#${String(order.id).padStart(4, '0')}`}
+                </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
@@ -41,13 +45,12 @@ export const ShippingTable: React.FC<ShippingTableProps> = ({ orders }) => {
                 </td>
                 <td className="px-6 py-4 text-sm font-medium">{order.prize}</td>
                 <td className="px-6 py-4">
-                  <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded ${
-                    order.status === 'pending' 
-                      ? 'bg-amber-100 text-amber-700' 
+                  <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded ${order.status === 'pending'
+                      ? 'bg-amber-100 text-amber-700'
                       : order.status === 'reviewing'
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'bg-emerald-100 text-emerald-700'
-                  }`}>
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'bg-emerald-100 text-emerald-700'
+                    }`}>
                     {t(order.status)}
                   </span>
                 </td>

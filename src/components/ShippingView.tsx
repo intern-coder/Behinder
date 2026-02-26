@@ -30,6 +30,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
   const filteredOrders = useMemo(() => {
     return orders.filter(order => {
       const matchesSearch =
+        (order.order_no && order.order_no.toLowerCase().includes(searchQuery.toLowerCase())) ||
         String(order.id).includes(searchQuery) ||
         order.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         order.prize.toLowerCase().includes(searchQuery.toLowerCase());
@@ -101,8 +102,8 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg border transition-all ${showFilters
-                    ? 'bg-primary text-white border-primary'
-                    : 'text-slate-600 bg-slate-50 border-slate-200 hover:bg-slate-100'
+                  ? 'bg-primary text-white border-primary'
+                  : 'text-slate-600 bg-slate-50 border-slate-200 hover:bg-slate-100'
                   }`}
               >
                 <Filter size={16} />
@@ -187,7 +188,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                     transition={{ delay: i * 0.03 }}
                     className="hover:bg-primary/5 transition-colors"
                   >
-                    <td className="px-6 py-4 text-sm font-mono text-slate-500">#ORD-{String(order.id).padStart(4, '0')}</td>
+                    <td className="px-6 py-4 text-sm font-mono text-slate-500">{order.order_no || `#ORD-${String(order.id).padStart(4, '0')}`}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
@@ -200,10 +201,10 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                     <td className="px-6 py-4 text-sm text-slate-500">{order.location}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded ${order.status === 'pending'
-                          ? 'bg-amber-100 text-amber-700'
-                          : order.status === 'reviewing'
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'bg-emerald-100 text-emerald-700'
+                        ? 'bg-amber-100 text-amber-700'
+                        : order.status === 'reviewing'
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'bg-emerald-100 text-emerald-700'
                         }`}>
                         {t(order.status)}
                       </span>
@@ -242,7 +243,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
               <div className="p-6 border-b border-primary/10 flex items-center justify-between bg-primary text-white">
                 <h3 className="font-bold text-xl flex items-center gap-2">
                   <Truck size={24} />
-                  {t('order_details')} #ORD-{String(selectedOrder.id).padStart(4, '0')}
+                  {t('order_details')} {selectedOrder.order_no || `#ORD-${String(selectedOrder.id).padStart(4, '0')}`}
                 </h3>
                 <button
                   onClick={() => setSelectedOrder(null)}

@@ -8,6 +8,7 @@ export interface StatData {
 
 export interface ShippingOrder {
   id: number;
+  order_no?: string;
   initials: string;
   name: string;
   location: string;
