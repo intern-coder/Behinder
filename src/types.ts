@@ -14,7 +14,7 @@ export interface ShippingOrder {
   location: string;
   prize: string;
   status: 'pending' | 'reviewing' | 'completed';
-  fullName?: string;
+  full_name?: string;
   address1?: string;
   address2?: string;
   city?: string;

@@ -97,7 +97,8 @@ export const translations = {
     notify_update: "系统更新通知",
     language: "语言选择",
     lang_zh: "简体中文",
-    lang_en: "English"
+    lang_en: "English",
+    not_provided: "未提供"
   },
   en: {
     app_title: "Admin Dashboard",
@@ -197,7 +198,8 @@ export const translations = {
     notify_update: "System update notification",
     language: "Language Selection",
     lang_zh: "Simplified Chinese",
-    lang_en: "English"
+    lang_en: "English",
+    not_provided: "Not provided"
   }
 };
 

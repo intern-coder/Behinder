@@ -278,7 +278,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                       </div>
                       <div className="space-y-1">
                         <p className="text-xs font-bold text-slate-400 uppercase">{t('full_name')}</p>
-                        <p className="font-medium text-slate-900">{selectedOrder.fullName || 'Jane Doe'}</p>
+                        <p className="font-medium text-slate-900">{selectedOrder.full_name || t('not_provided')}</p>
                       </div>
                     </div>
 
@@ -289,7 +289,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                       <div className="space-y-3">
                         <div className="space-y-1">
                           <p className="text-xs font-bold text-slate-400 uppercase">{t('address1')}</p>
-                          <p className="font-medium text-slate-900">{selectedOrder.address1 || '1234 Apple St.'}</p>
+                          <p className="font-medium text-slate-900">{selectedOrder.address1 || t('not_provided')}</p>
                         </div>
                         {selectedOrder.address2 && (
                           <div className="space-y-1">
@@ -300,15 +300,15 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                         <div className="grid grid-cols-3 gap-4">
                           <div className="space-y-1">
                             <p className="text-xs font-bold text-slate-400 uppercase">{t('city')}</p>
-                            <p className="font-medium text-slate-900">{selectedOrder.city || 'San Francisco'}</p>
+                            <p className="font-medium text-slate-900">{selectedOrder.city || t('not_provided')}</p>
                           </div>
                           <div className="space-y-1">
                             <p className="text-xs font-bold text-slate-400 uppercase">{t('state')}</p>
-                            <p className="font-medium text-slate-900">{selectedOrder.state || 'CA'}</p>
+                            <p className="font-medium text-slate-900">{selectedOrder.state || t('not_provided')}</p>
                           </div>
                           <div className="space-y-1">
                             <p className="text-xs font-bold text-slate-400 uppercase">{t('zip')}</p>
-                            <p className="font-medium text-slate-900">{selectedOrder.zip || '94107'}</p>
+                            <p className="font-medium text-slate-900">{selectedOrder.zip || t('not_provided')}</p>
                           </div>
                         </div>
                       </div>
@@ -320,7 +320,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                       </div>
                       <div className="space-y-1">
                         <p className="text-xs font-bold text-slate-400 uppercase">{t('phone')}</p>
-                        <p className="font-medium text-slate-900">{selectedOrder.phone || '(555) 000-0000'}</p>
+                        <p className="font-medium text-slate-900">{selectedOrder.phone || t('not_provided')}</p>
                       </div>
                     </div>
                   </div>
