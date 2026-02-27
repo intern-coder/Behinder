@@ -58,7 +58,7 @@ export const translations = {
     reject_reason_placeholder: "请输入其他原因...",
     delete_confirm: "确定要删除这个订单吗？",
     delete_success: "订单已删除",
-    reject_success: "状态已更新为审核不通过",
+    reject_success: "审核理由已提交",
 
     order_details: "订单详情",
     shipping_info: "收货信息",
@@ -170,7 +170,7 @@ export const translations = {
     reject_reason_placeholder: "Enter other reason...",
     delete_confirm: "Are you sure you want to delete this order?",
     delete_success: "Order deleted successfully",
-    reject_success: "Status updated to Audit Failed",
+    reject_success: "Audit reason submitted",
 
     order_details: "Order Details",
     shipping_info: "Shipping Info",

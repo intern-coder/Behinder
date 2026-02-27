@@ -38,7 +38,9 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
         order.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         order.prize.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesStatus = filterStatus === 'all' || order.status === filterStatus;
+      const isRejected = !!order.rejection_reason;
+      const matchesStatus = filterStatus === 'all' ||
+        (filterStatus === 'rejected' ? isRejected : (order.status === filterStatus && !isRejected));
       const matchesPrize = filterPrize === 'all' || order.prize === filterPrize;
 
       return matchesSearch && matchesStatus && matchesPrize;
@@ -63,6 +65,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
           carrier: carrier,
           tracking_no: trackingNumber,
           ship_date: shipDate,
+          rejection_reason: null,
         })
         .eq('id', selectedOrder.id);
 
@@ -94,7 +97,6 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
     try {
       const { error } = await supabase.from('orders')
         .update({
-          status: 'rejected',
           rejection_reason: finalReason
         })
         .eq('id', selectedOrder.id);
@@ -251,15 +253,15 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                     <td className="px-6 py-4 text-sm font-medium">{order.prize}</td>
                     <td className="px-6 py-4 text-sm text-slate-500">{order.location}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded ${order.status === 'pending'
-                        ? 'bg-amber-100 text-amber-700'
-                        : order.status === 'reviewing'
-                          ? 'bg-blue-100 text-blue-700'
-                          : order.status === 'rejected'
-                            ? 'bg-red-100 text-red-700'
+                      <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded ${order.rejection_reason
+                        ? 'bg-red-100 text-red-700'
+                        : order.status === 'pending'
+                          ? 'bg-amber-100 text-amber-700'
+                          : order.status === 'reviewing'
+                            ? 'bg-blue-100 text-blue-700'
                             : 'bg-emerald-100 text-emerald-700'
                         }`}>
-                        {t(order.status)}
+                        {order.rejection_reason ? t('rejected') : t(order.status)}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
