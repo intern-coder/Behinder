@@ -60,6 +60,9 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
         .from('orders')
         .update({
           status: 'completed',
+          carrier: carrier,
+          tracking_no: trackingNumber,
+          ship_date: shipDate,
         })
         .eq('id', selectedOrder.id);
 

@@ -15,6 +15,9 @@ export interface ShippingOrder {
   prize: string;
   status: 'pending' | 'reviewing' | 'completed' | 'rejected';
   rejection_reason?: string;
+  carrier?: string;
+  tracking_no?: string;
+  ship_date?: string;
   full_name?: string;
   address1?: string;
   address2?: string;
