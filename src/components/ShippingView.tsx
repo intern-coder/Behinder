@@ -86,9 +86,9 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
     if (!selectedOrder) return;
 
     let finalReason = '';
-    if (rejectionReason === '1') finalReason = t('reject_reason_1');
-    else if (rejectionReason === '2') finalReason = t('reject_reason_2');
-    else finalReason = customReason || t('reject_reason_3');
+    if (rejectionReason === '1') finalReason = 'Multiple entries, invalid';
+    else if (rejectionReason === '2') finalReason = 'Phone number mismatch with order';
+    else finalReason = customReason || 'Other reason';
 
     setIsSubmitting(true);
     try {
