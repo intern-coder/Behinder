@@ -407,10 +407,21 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                   {t('close')}
                 </button>
                 <button
-                  onClick={() => setShowShipModal(true)}
+                  onClick={() => {
+                    if (selectedOrder.status === 'completed') {
+                      setCarrier(selectedOrder.carrier || 'USPS');
+                      setTrackingNumber(selectedOrder.tracking_no || '');
+                      setShipDate(selectedOrder.ship_date || new Date().toISOString().split('T')[0]);
+                    } else {
+                      setCarrier('USPS');
+                      setTrackingNumber('');
+                      setShipDate(new Date().toISOString().split('T')[0]);
+                    }
+                    setShowShipModal(true);
+                  }}
                   className="px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
                 >
-                  {t('confirm_ship')}
+                  {selectedOrder.status === 'completed' ? t('view_edit_ship') : t('confirm_ship')}
                 </button>
               </div>
             </motion.div>
@@ -428,7 +439,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
               <div className="p-6 border-b border-primary/10 flex items-center justify-between bg-slate-900 text-white">
                 <h3 className="font-bold text-lg flex items-center gap-2">
                   <Truck size={20} />
-                  {t('ship_form_title')}
+                  {selectedOrder.status === 'completed' ? t('edit_ship_title') : t('ship_form_title')}
                 </h3>
                 <button
                   onClick={() => setShowShipModal(false)}

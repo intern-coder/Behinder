@@ -71,6 +71,8 @@ export const translations = {
     phone: "电话号码",
     close: "关闭",
     confirm_ship: "确认发货",
+    view_edit_ship: "查看/修改发货信息",
+    edit_ship_title: "修改发货信息",
 
     ship_form_title: "填写发货信息",
     carrier: "物流承运商",
@@ -183,6 +185,8 @@ export const translations = {
     phone: "Phone Number",
     close: "Close",
     confirm_ship: "Confirm Ship",
+    view_edit_ship: "View/Edit Shipment Info",
+    edit_ship_title: "Edit Shipping Info",
 
     ship_form_title: "Shipping Information",
     carrier: "Carrier",
