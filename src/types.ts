@@ -13,7 +13,8 @@ export interface ShippingOrder {
   name: string;
   location: string;
   prize: string;
-  status: 'pending' | 'reviewing' | 'completed';
+  status: 'pending' | 'reviewing' | 'completed' | 'rejected';
+  rejection_reason?: string;
   full_name?: string;
   address1?: string;
   address2?: string;

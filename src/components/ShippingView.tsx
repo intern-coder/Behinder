@@ -13,6 +13,9 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
   const { t } = useLanguage();
   const [selectedOrder, setSelectedOrder] = useState<ShippingOrder | null>(null);
   const [showShipModal, setShowShipModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState('1');
+  const [customReason, setCustomReason] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
@@ -53,13 +56,10 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
     setIsSubmitting(true);
 
     try {
-      // 更新 Supabase 中的订单状态
       const { error } = await supabase
         .from('orders')
         .update({
           status: 'completed',
-          // 这里可以扩展保存物流信息，但目前 types.ts 中没有对应字段
-          // 如果需要可以后期在数据库中增加 carrier, tracking_no 字段
         })
         .eq('id', selectedOrder.id);
 
@@ -71,9 +71,56 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
         setShowShipModal(false);
         setSelectedOrder(null);
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to update order status:', error);
-      alert('操作失败，请重试');
+      alert(error.message || '操作失败，请重试');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!selectedOrder) return;
+
+    let finalReason = '';
+    if (rejectionReason === '1') finalReason = t('reject_reason_1');
+    else if (rejectionReason === '2') finalReason = t('reject_reason_2');
+    else finalReason = customReason || t('reject_reason_3');
+
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from('orders')
+        .update({
+          status: 'rejected',
+          rejection_reason: finalReason
+        })
+        .eq('id', selectedOrder.id);
+
+      if (error) throw error;
+
+      alert(t('reject_success'));
+      setShowRejectModal(false);
+      setSelectedOrder(null);
+      setCustomReason('');
+    } catch (error: any) {
+      console.error('Failed to reject order:', error);
+      alert(error.message || '操作失败，请重试');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm(t('delete_confirm'))) return;
+
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from('orders').delete().eq('id', id);
+      if (error) throw error;
+      alert(t('delete_success'));
+    } catch (error: any) {
+      console.error('Failed to delete order:', error);
+      alert(error.message || '操作失败，请重试');
     } finally {
       setIsSubmitting(false);
     }
@@ -129,6 +176,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                         <option value="all">{t('view_all')}</option>
                         <option value="pending">{t('pending')}</option>
                         <option value="reviewing">{t('reviewing')}</option>
+                        <option value="rejected">{t('rejected')}</option>
                         <option value="completed">{t('completed')}</option>
                       </select>
                     </div>
@@ -204,18 +252,37 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
                         ? 'bg-amber-100 text-amber-700'
                         : order.status === 'reviewing'
                           ? 'bg-blue-100 text-blue-700'
-                          : 'bg-emerald-100 text-emerald-700'
+                          : order.status === 'rejected'
+                            ? 'bg-red-100 text-red-700'
+                            : 'bg-emerald-100 text-emerald-700'
                         }`}>
                         {t(order.status)}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => setSelectedOrder(order)}
-                        className="text-primary hover:underline text-sm font-bold"
-                      >
-                        {t('details')}
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => {
+                            setSelectedOrder(order);
+                            setShowRejectModal(true);
+                          }}
+                          className="p-1 px-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors border border-amber-100 text-xs font-bold"
+                        >
+                          {t('reject')}
+                        </button>
+                        <button
+                          onClick={() => handleDelete(order.id)}
+                          className="p-1 px-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-red-100 text-xs font-bold"
+                        >
+                          {t('delete')}
+                        </button>
+                        <button
+                          onClick={() => setSelectedOrder(order)}
+                          className="text-primary hover:underline text-sm font-bold ml-2"
+                        >
+                          {t('details')}
+                        </button>
+                      </div>
                     </td>
                   </motion.tr>
                 ))
@@ -459,6 +526,67 @@ export const ShippingView: React.FC<ShippingViewProps> = ({ orders }) => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Reject Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden"
+          >
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="font-bold text-lg text-slate-800">{t('reject_reason_title')}</h3>
+              <button onClick={() => setShowRejectModal(false)} className="text-slate-400 hover:text-slate-600">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="space-y-3">
+                {[1, 2, 3].map((num) => (
+                  <label key={num} className="flex flex-col gap-2 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="reason"
+                        value={String(num)}
+                        checked={rejectionReason === String(num)}
+                        onChange={(e) => setRejectionReason(e.target.value)}
+                        className="size-4 text-primary focus:ring-primary"
+                      />
+                      <span className="text-sm font-medium">{t(`reject_reason_${num}` as any)}</span>
+                    </div>
+                    {num === 3 && rejectionReason === '3' && (
+                      <textarea
+                        value={customReason}
+                        onChange={(e) => setCustomReason(e.target.value)}
+                        placeholder={t('reject_reason_placeholder')}
+                        className="w-full mt-1 p-3 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary outline-none min-h-[100px]"
+                      />
+                    )}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="px-6 py-4 bg-slate-50 flex gap-3">
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="flex-1 px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+                disabled={isSubmitting}
+              >
+                {t('cancel')}
+              </button>
+              <button
+                onClick={handleReject}
+                className="flex-[2] px-4 py-2 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-xl transition-opacity flex items-center justify-center gap-2"
+                disabled={isSubmitting || (rejectionReason === '3' && !customReason.trim())}
+              >
+                {isSubmitting ? t('submitting') : t('reject')}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
